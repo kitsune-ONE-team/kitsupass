@@ -1,0 +1,4 @@
+SecretStorage==3.3.3
+bottle==0.13.2
+jwskate==0.11.1
+pyotp==2.9.0

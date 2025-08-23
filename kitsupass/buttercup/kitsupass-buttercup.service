@@ -1,0 +1,10 @@
+[Unit]
+Description=kitsupass buttercup server
+
+[Service]
+ExecStart=kitsupass buttercup
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
