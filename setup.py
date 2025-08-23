@@ -20,8 +20,8 @@ setup(
         ],
         'keyring':  [
             'SecretStorage==3.3.3',
-        ]
-    }
+        ],
+    },
     packages=find_packages(
         include=['kitsupass*'],
         exclude=['tests', 'importer'],
