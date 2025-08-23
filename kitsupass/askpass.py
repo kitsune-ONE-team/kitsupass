@@ -114,7 +114,7 @@ def main():
     except IndexError:
         request = ''
 
-    open('/tmp/kp.txt', 'w').write(request)
+    # open('/tmp/kp.txt', 'w').write(request)
 
     if m := re.match(r"Enter passphrase for key '([^']+)':", request):
         key_path = m.group(1)
