@@ -7,13 +7,22 @@ from jwskate import Jwk
 ULID = r'^[A-Z0-9]{26}$'
 
 
+def get_annotations(obj):
+    if hasattr(obj, '__annotations__'):
+        return obj.__annotations__
+    if hasattr(obj, '__annotate_func__'):
+        return obj.__annotate_func__()
+    return {}
+
+
+
 class AnySchema:
     def __init__(self, *schemas):
         self.schemas = schemas
 
     def __call__(self, **kwargs):
         for schema in self.schemas:
-            if set(kwargs) & set(schema.__annotations__) != set(kwargs):
+            if set(kwargs) & set(get_annotations(schema)) != set(kwargs):
                 continue
             return schema(**kwargs)
 
@@ -26,8 +35,8 @@ class SchemaMeta(type):
 class Schema(metaclass=SchemaMeta):
     def __init__(self, **kwargs):
         for name, value in kwargs.items():
-            if name in self.__annotations__:
-                vartype = self.__annotations__[name]
+            if name in get_annotations(type(self)):
+                vartype = get_annotations(type(self))[name]
 
                 if isinstance(vartype, GenericAlias):
                     varsubtype = vartype.__args__[0]
@@ -44,7 +53,7 @@ class Schema(metaclass=SchemaMeta):
             ' '.join((
                 f'{k}={getattr(self, k)}'
                 for k in dir(self)
-                if k in self.__annotations__
+                if k in get_annotations(type(self))
             ))
         )
 
